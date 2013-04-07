@@ -5,6 +5,20 @@ Created on 30/03/2013
 @author: Dani
 '''
 
+class Style(object):
+    def __init__(self, *args, **kwargs):
+        for i, v in enumerate(args):
+            if i == 0:
+                self.sel = v
+        self.rules = kwargs
+    def render(self):
+        output = ''
+        output += self.sel + '{'
+        for (key, value) in self.rules.items():
+            output += key.lower() + ':' + value + ';'
+        output += '}'
+        return output
+
 class UTag(object):
     def __init__(self, *args, **kwargs):
         for i, v in enumerate(args):
@@ -25,10 +39,10 @@ class UTag(object):
 class Tag(UTag):
     def __init__(self, *args, **kwargs):
         super(Tag,self).__init__(*args, **kwargs)
-        self.inner = {}
+        self.inner = []
     def render(self):
         output = '<' + self.nombre + self.render_attrs() + '>'
-        for key, value in self.inner.items():
+        for key, value in enumerate(self.inner):
             if type(value) is not str:
                 output += value.render()
             else:
@@ -42,4 +56,4 @@ class myGoogleLink (Tag):
         self.nombre = 'a'
         self.attrs['class'] = 'my_button_of_google'
         self.attrs['href'] = 'https://www.google.es/'
-        self.inner['text'] = 'Direct link to Google'
+        self.inner.append('Direct link to Google')
