@@ -5,7 +5,8 @@ Created on 30/03/2013
 @author: Dani
 """
 
-from vista import Tag, myGoogleLink , Style
+from base import Tag, Style, Styles
+from extended import myNestedSpanStyle,myGoogleLink,myLinkStyle
 import sys
 
 def main():
@@ -15,9 +16,14 @@ def main():
 
     print tag.render()
     
+    styles = Styles()
+    styles.styles.append(myNestedSpanStyle())
+    styles.styles.append(myLinkStyle())
+    
+    
     style = Tag('style')
-    style.inner.append(Style('a', Color='pink'))
-    print style.render()
+    style.inner.append(myNestedSpanStyle())
+    print styles.render()
 
 
 if __name__ == '__main__':

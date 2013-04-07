@@ -1,9 +1,18 @@
 # -*- coding: utf-8 -*-
-'''
+"""
 Created on 30/03/2013
 
 @author: Dani
-'''
+"""
+
+class Styles(object):
+    def __init__(self):
+        self.styles = []
+    def render(self):
+        output = ''
+        for key, value in enumerate(self.styles):
+            output += value.render()
+        return output
 
 class Style(object):
     def __init__(self, *args, **kwargs):
@@ -23,7 +32,7 @@ class UTag(object):
     def __init__(self, *args, **kwargs):
         for i, v in enumerate(args):
             if i == 0:
-                self.nombre = v
+                self.name = v
         self.attrs = kwargs
     def render_attrs(self):
         output = ' '
@@ -34,26 +43,18 @@ class UTag(object):
                 output += key.lower() + '="' + value + '"'
         return output
     def render(self):
-        output =  '< ' + self.nombre + self.render_attrs() + '/>'
+        output =  '< ' + self.name + self.render_attrs() + '/>'
 
 class Tag(UTag):
     def __init__(self, *args, **kwargs):
         super(Tag,self).__init__(*args, **kwargs)
         self.inner = []
     def render(self):
-        output = '<' + self.nombre + self.render_attrs() + '>'
+        output = '<' + self.name + self.render_attrs() + '>'
         for key, value in enumerate(self.inner):
             if type(value) is not str:
                 output += value.render()
             else:
                 output += value
-        output += '</' + self.nombre + '>'
+        output += '</' + self.name + '>'
         return output
-
-class myGoogleLink (Tag):
-    def __init__(self, *args, **kwargs):
-        super(myGoogleLink,self).__init__(*args, **kwargs)
-        self.nombre = 'a'
-        self.attrs['class'] = 'my_button_of_google'
-        self.attrs['href'] = 'https://www.google.es/'
-        self.inner.append('Direct link to Google')
