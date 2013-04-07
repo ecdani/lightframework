@@ -1,28 +1,31 @@
+# -*- coding: utf-8 -*-
 '''
 Created on 30/03/2013
 
 @author: Dani
 '''
 
-class UTag:
-    nombre = ''
-    attrs = {}
+class UTag(object):
+    def __init__(self, *args, **kwargs):
+        for i, v in enumerate(args):
+            if i == 0:
+                self.nombre = v
+        self.attrs = kwargs
     def render_attrs(self):
         output = ' '
         for (key, value) in self.attrs.items():
             if not isinstance(value, str):
-                output += key + '=' + value
+                output += key.lower() + '=' + value
             else:
-                output += key + '="' + value + '"'
+                output += key.lower() + '="' + value + '"'
         return output
     def render(self):
-        output =  '<' + self.nombre + self.render_attrs() + '/>'
-    def __init__(self, **kwargs):
-        self.attrs['href'] = kwargs['href']
+        output =  '< ' + self.nombre + self.render_attrs() + '/>'
 
 class Tag(UTag):
-    def __init__(self):
-        inner = {}
+    def __init__(self, *args, **kwargs):
+        super(Tag,self).__init__(*args, **kwargs)
+        self.inner = {}
     def render(self):
         output = '<' + self.nombre + self.render_attrs() + '>'
         for key, value in self.inner.items():
@@ -32,20 +35,11 @@ class Tag(UTag):
                 output += value
         output += '</' + self.nombre + '>'
         return output
-    
-class Foo():
 
-    def __init__(self):
-            self.name = 'name'
-            self.foo_objects = {}
-    def print_name(self):
-        output = self.name
-        for key, value in self.foo_objects.items():
-            output += value.print_name()
-        return output
-    
-class Link (Tag):
-    nombre = 'a'
-
-class Paragraph (Tag):
-    nombre = 'p'
+class myGoogleLink (Tag):
+    def __init__(self, *args, **kwargs):
+        super(myGoogleLink,self).__init__(*args, **kwargs)
+        self.nombre = 'a'
+        self.attrs['class'] = 'my_button_of_google'
+        self.attrs['href'] = 'https://www.google.es/'
+        self.inner['text'] = 'Direct link to Google'
