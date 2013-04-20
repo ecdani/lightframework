@@ -8,14 +8,29 @@ from base import Tag, Tags, Style, Doctype
 
 # Auxiliares:
 
+
 class Page(Tags):
     def __init__(self,*args,**kwargs):
         super(Page,self).__init__(*args, **kwargs)
         self.tags.append(Doctype())
-        self.tags.append(Tag('html'))
-        self.tags[1].inner.append(Tag('head'))
-        self.tags[1].inner.append(Tag('body'))
+        self.tags.append(BaseHtml())
 
+class Page2(Page):
+    def __init__(self,*args,**kwargs):
+        super(Page2,self).__init__(*args, **kwargs)
+
+class BaseHtml(Tag):
+    def __init__(self,*args,**kwargs):
+        super(BaseHtml,self).__init__(*args, **kwargs)
+        self.name = 'html'
+        self.inner.append(Tag('head'))
+        self.inner.append(Tag('body'))
+
+class BaseHtml2(BaseHtml):
+    def __init__(self,*args,**kwargs):
+        super(BaseHtml2,self).__init__(*args, **kwargs)
+        self.inner.insert(0, Tag('head2'))
+        self.inner.insert(1, Tag('body2'))
 # Ejemplos:
 
 class MyGoogleLink(Tag):
