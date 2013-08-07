@@ -5,7 +5,7 @@ Clases base para etiquetas html y css
 @author: Dani
 """
 
-class Styles(object):
+class Styles():
     """
     Contenedor de estilos css
     """
@@ -17,14 +17,19 @@ class Styles(object):
             output += str(value)
         return output
 
-class Style(object):
+class Style():
     """
     Estilo css { };
     """
     def __init__(self, *args, **kwargs):
-        for i, v in enumerate(args):
+        '''for i, v in enumerate(args):
             if i == 0:
-                self.sel = v
+                self.sel = v'''
+        self.sel = ''
+        try:
+            self.sel = args[0]
+        except IndexError:
+            pass
         self.rules = kwargs
     def __str__(self):
         output = ''
@@ -53,14 +58,15 @@ class Tags(list):
             output += str(value)
         return output
 
-class UTag(object):
+class UTag():
     """
     Etiqueta autocontenida html < />
     """
     def __init__(self, *args, **kwargs):
-        for i, v in enumerate(args):
-            if i == 0:
-                self.name = v
+        try:
+            self.name = args[0]
+        except IndexError:
+            pass
         self.attrs = kwargs
     def render_attrs(self):
         output = ' '
@@ -81,6 +87,10 @@ class Tag(UTag):
     def __init__(self, *args, **kwargs):
         super(Tag,self).__init__(*args, **kwargs)
         self.inner = []
+        try: # get(key[, default])
+            self.inner.append(args[1])
+        except IndexError:
+            pass
     '''def get(self,*args,**kwargs):
         for i, v in enumerate(args):
             if i == 0:
@@ -94,7 +104,7 @@ class Tag(UTag):
         output += '</' + self.name + '>'
         return output
 
-class Doctype(object):
+class Doctype():
     """
     Etiqueta <!DOCTYPE >
     """
