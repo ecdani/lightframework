@@ -32,14 +32,13 @@ def main():
     etiquetas.append(tag)
     
     # Creo un contenedor de estilos, añado otro contenedor y mas estilos
-    # TODO, hacer que Styles herede de list igual que Tags
     styles = Styles()
-    styles.styles.append(AnotherLink())
-    styles.styles.append(MyGoogleFont())
-    styles.styles.append(MyGoogleLettersStyles())
-    styles.styles.append(MyGoogleLinkStyle())
-    styles.styles.append(MyGenericLink())
-    styles.styles.append(AnotherLink())
+    styles.append(MyGoogleFont())
+    styles.append(AnotherLink())
+    styles.append(MyGoogleLettersStyles())
+    styles.append(MyGoogleLinkStyle())
+    styles.append(MyGenericLink())
+    styles.append(AnotherLink())
     
 
     # Creo una etiqueta <style></style>, meto los estilos dentro

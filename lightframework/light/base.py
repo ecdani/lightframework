@@ -5,15 +5,13 @@ Clases base para etiquetas html y css
 @author: Dani
 """
 
-class Styles():
+class Styles(list):
     """
     Contenedor de estilos css
     """
-    def __init__(self):
-        self.styles = []
     def __str__(self):
         output = ''
-        for key, value in enumerate(self.styles):
+        for key, value in enumerate(self):
             output += str(value)
         return output
 
@@ -22,9 +20,6 @@ class Style():
     Estilo css { };
     """
     def __init__(self, *args, **kwargs):
-        '''for i, v in enumerate(args):
-            if i == 0:
-                self.sel = v'''
         self.sel = ''
         try:
             self.sel = args[0]
@@ -43,15 +38,6 @@ class Tags(list):
     """
     Contenedor de etiquetas html
     """
-    '''def __init__(self):
-        self.tags = []
-    def get(self,*args,**kwargs):
-        for i, v in enumerate(args):
-            if i == 0:
-                pass
-            #obj = self.tags[v]
-            #obj = obj.get(v, *args, **kwargs)
-        return obj'''
     def __str__(self):
         output = ''
         for key, value in enumerate(self):
@@ -69,16 +55,16 @@ class UTag():
             pass
         self.attrs = kwargs
     def render_attrs(self):
-        output = ' '
+        output = ''
         for (key, value) in self.attrs.items():
-            output += key.lower() + '='
+            output += ' ' + key.lower() + '='
             if not isinstance(value, str):
                 output += value
             else:
                 output += '"' + value + '"'
         return output
     def __str__(self):
-        return '< ' + self.name + self.render_attrs() + '/>'
+        return '<' + self.name + self.render_attrs() + '/>'
 
 class Tag(UTag):
     """
@@ -87,16 +73,10 @@ class Tag(UTag):
     def __init__(self, *args, **kwargs):
         super(Tag,self).__init__(*args, **kwargs)
         self.inner = []
-        try: # get(key[, default])
+        try:
             self.inner.append(args[1])
         except IndexError:
             pass
-    '''def get(self,*args,**kwargs):
-        for i, v in enumerate(args):
-            if i == 0:
-                obj = self.inner[v]
-            obj = obj.get(v)
-        return obj'''
     def __str__(self):
         output = '<' + self.name + self.render_attrs() + '>'
         for key, value in enumerate(self.inner):
@@ -115,5 +95,3 @@ class Doctype():
             self.inner = inner
     def __str__(self):
         return '<!DOCTYPE ' + self.inner + '>'
-
-
