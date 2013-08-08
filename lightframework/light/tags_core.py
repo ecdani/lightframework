@@ -38,6 +38,15 @@ class Tags(list):
     """
     Contenedor de etiquetas html
     """
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.styles = Styles()
+        
+    def render_styles(self):
+        output = str(self.styles)
+        for key, value in enumerate(self):
+            output += value.render_styles()
+        return output
     def __str__(self):
         output = ''
         for key, value in enumerate(self):
@@ -54,6 +63,11 @@ class UTag():
         except IndexError:
             pass
         self.attrs = kwargs
+        self.styles = Styles()
+
+    def render_styles(self):
+        return str(self.styles)
+
     def render_attrs(self):
         output = ''
         for (key, value) in self.attrs.items():
@@ -71,12 +85,19 @@ class Tag(UTag):
     Etiqueta normal html < > </ >
     """
     def __init__(self, *args, **kwargs):
-        super(Tag,self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.inner = []
         try:
             self.inner.append(args[1])
         except IndexError:
             pass
+
+    def render_styles(self):
+        output = str(self.styles)
+        for key, value in enumerate(self.inner):
+            output += value.render_styles()
+        return output
+
     def __str__(self):
         output = '<' + self.name + self.render_attrs() + '>'
         for key, value in enumerate(self.inner):
