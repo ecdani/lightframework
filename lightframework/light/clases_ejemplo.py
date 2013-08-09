@@ -3,6 +3,7 @@
 Created on 07/04/2013
 Estilos predefinidos
 @author: Dani
+#TODO Soporte para javascript y ficheros css, asi como su generación
 """
 from tags_core import Tag, Tags, Style, Doctype, Styles
 
@@ -13,10 +14,6 @@ class Page(Tags):
         super().__init__(*args, **kwargs)
         self.append(Doctype())
         self.append(BaseHtml())
-
-class Page2(Page):
-    def __init__(self,*args,**kwargs):
-        super().__init__(*args, **kwargs)
 
 class BaseHtml(Tag):
     def __init__(self,*args,**kwargs):
