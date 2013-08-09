@@ -18,6 +18,7 @@ class Styles(list):
 class Style():
     """
     Estilo css { };
+    TODO: Tal vez debería heredar de diccionario
     """
     def __init__(self, *args, **kwargs):
         self.sel = ''
@@ -41,7 +42,14 @@ class Tags(list):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.styles = Styles()
-        
+    
+    def get_styles(self):
+        output = Styles()
+        output.append(self.styles)
+        for key, value in enumerate(self):
+            output.append(value.get_styles())
+        return output
+
     def render_styles(self):
         output = str(self.styles)
         for key, value in enumerate(self):
@@ -64,6 +72,9 @@ class UTag():
             pass
         self.attrs = kwargs
         self.styles = Styles()
+    
+    def get_styles(self):
+        return self.styles
 
     def render_styles(self):
         return str(self.styles)
@@ -80,27 +91,35 @@ class UTag():
     def __str__(self):
         return '<' + self.name + self.render_attrs() + '/>'
 
-class Tag(UTag):
+class Tag(UTag,list):
     """
     Etiqueta normal html < > </ >
     """
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.inner = []
+        #self.inner = []
         try:
-            self.inner.append(args[1])
+            self.append(args[1])
         except IndexError:
             pass
 
+    def get_styles(self):
+        output = Styles()
+        output.append(self.styles)
+        for key, value in enumerate(self):
+            if not isinstance(value, str):
+                output.append(value.get_styles())     
+        return output
+    
     def render_styles(self):
         output = str(self.styles)
-        for key, value in enumerate(self.inner):
+        for key, value in enumerate(self):
             output += value.render_styles()
         return output
 
     def __str__(self):
         output = '<' + self.name + self.render_attrs() + '>'
-        for key, value in enumerate(self.inner):
+        for key, value in enumerate(self):
                 output += str(value)
         output += '</' + self.name + '>'
         return output
@@ -114,5 +133,12 @@ class Doctype():
             self.inner = 'html'
         else:
             self.inner = inner
+            
+    def get_styles(self): #TODO: Si esta mierda no se puede esquivar, estudiar la posibilidad de una interfaz
+        return Styles()
+
+    def render_styles(self):
+        return ''
+
     def __str__(self):
         return '<!DOCTYPE ' + self.inner + '>'

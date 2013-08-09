@@ -4,16 +4,15 @@ Created on 07/04/2013
 Estilos predefinidos
 @author: Dani
 """
-from base import Tag, Tags, Style, Doctype, Styles
+from tags_core import Tag, Tags, Style, Doctype, Styles
 
-# Auxiliares: No se usan, son html genérico como el doctype y el body...
-
+# Auxiliares: Html genérico como el doctype y el body...
 
 class Page(Tags):
     def __init__(self,*args,**kwargs):
         super().__init__(*args, **kwargs)
-        self.tags.append(Doctype())
-        self.tags.append(BaseHtml())
+        self.append(Doctype())
+        self.append(BaseHtml())
 
 class Page2(Page):
     def __init__(self,*args,**kwargs):
@@ -23,8 +22,8 @@ class BaseHtml(Tag):
     def __init__(self,*args,**kwargs):
         super().__init__(*args, **kwargs)
         self.name = 'html'
-        self.inner.append(Tag('head'))
-        self.inner.append(Tag('body'))
+        self.append(Tag('head'))
+        self.append(Tag('body'))
 
 class BaseHtml2(BaseHtml):
     """
@@ -32,8 +31,8 @@ class BaseHtml2(BaseHtml):
     """
     def __init__(self,*args,**kwargs):
         super().__init__(*args, **kwargs)
-        self.inner.insert(0, Tag('head2'))
-        self.inner.insert(1, Tag('body2'))
+        self.insert(0, Tag('head2'))
+        self.insert(1, Tag('body2'))
         
 # Ejemplos:
 
@@ -58,12 +57,12 @@ class LinkGoogle(Link):
         super().__init__(*args, **kwargs)
         self.attrs['class'] = 'link_g'
         self.attrs['href'] = 'https://www.google.es/'
-        self.inner.append(Tag('span','G'))
-        self.inner.append(Tag('span','o'))
-        self.inner.append(Tag('span','o'))
-        self.inner.append(Tag('span','g'))
-        self.inner.append(Tag('span','l'))
-        self.inner.append(Tag('span','e'))
+        self.append(Tag('span','G'))
+        self.append(Tag('span','o'))
+        self.append(Tag('span','o'))
+        self.append(Tag('span','g'))
+        self.append(Tag('span','l'))
+        self.append(Tag('span','e'))
         self.styles.append(EstiloLinkGoogle())
 
 # Estilos css:

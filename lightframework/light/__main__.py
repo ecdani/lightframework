@@ -5,8 +5,8 @@ Tests y ejemplos de uso
 @author: Dani
 """
 
-from base import Tag, Styles, Tags
-from extended import MyGoogleLettersStyles,MyGoogleLinkStyle,MyGenericLink,AnotherLink, MyGoogleLink,MyGoogleFont
+from tags_core import Tag, UTag, Tags
+from clases_ejemplo import LinkGoogle, Page
 import sys
 #from light.extended import BaseHtml2
 from wsgiref.simple_server import make_server
@@ -23,40 +23,33 @@ def main():
     #obj = page.get(0,0,0)
     
     # Empiezo mi contenedor de etiquetas, con mi link de google prefabricado y
-    # un br
-    etiquetas = Tags([MyGoogleLink(),Tag('br')])
+    # un br, el accesso por indice puede resultar algo duro, hay que ver si hay 
+    # otras maneras.
+    etiquetas = Page()
+    etiquetas[1][1].append(Tags([LinkGoogle(),UTag('br')]))
     
     # Creo un link nuevo, igual que el anterior, pero al vuelo (sin predefinir)
-    tag = Tag('a', Href="http://www.es.yahoo.com/",  Class="my_button_of_google")
-    tag.inner.append("Yahoo!")
-    etiquetas.append(tag)
-    
-    # Creo un contenedor de estilos, añado otro contenedor y mas estilos
-    styles = Styles()
-    styles.append(MyGoogleFont())
-    styles.append(AnotherLink())
-    styles.append(MyGoogleLettersStyles())
-    styles.append(MyGoogleLinkStyle())
-    styles.append(MyGenericLink())
-    styles.append(AnotherLink())
-    
+    tag = Tag('a', Href="http://www.es.yahoo.com/",  Class="link_g")
+    tag.append("Yahoo!")
+    etiquetas[1][1].append(tag)
 
     # Creo una etiqueta <style></style>, meto los estilos dentro
     styles_tag = Tag('style')
-    styles_tag.inner.append(styles)
+    styles_tag.append(etiquetas.get_styles())
     
-    # Creo que también se podria haber hecho así:
-    # styles_tag = Tag('style',str(styles))
-    # O sin el str, si, sin el str mejor.
+    # Añado al head el título y los estilos
+    etiquetas[1][0].append(Tag('title','Lightframework'))
+    etiquetas[1][0].append(UTag('meta',Charset='UTF-8'))
+    etiquetas[1][0].append(styles_tag)
     
-    # Añado la última etiqueta de estilos
-    etiquetas.append(styles_tag)
+    # También se puede escribir así:
+    # etiquetas.append(Tag('style',etiquetas.get_styles()))
     
     # Devuelvo al server en forma de string todo el HTML
     return  str(etiquetas)
 
 
-def hello_world(environ, start_response):
+def dev_test_server_handler(environ, start_response):
     """
     Manejo de peticiones al servidor
     """
@@ -64,6 +57,6 @@ def hello_world(environ, start_response):
     return [main().encode(encoding='utf_8')]
     
 if __name__ == '__main__':
-    srv = make_server('localhost', 8080, hello_world)
+    srv = make_server('localhost', 8080, dev_test_server_handler)
     srv.serve_forever()
     #sys.exit(main())
