@@ -5,10 +5,14 @@ Generador html/css experimental
 
 Utiliza el propio lenguaje python para escribir html y css, permitiendo crear clases y objetos que son etiquetas o conjuntos de etiquetas, permitiendo utilizar los mecanismos de herencia y POO de python.
 
-Supongamos una lista de enlaces, sacado de la web de Jinga: 
+Supongamos una lista de enlaces, sacado de la web de Jinga:
+
+<code>
 {% for user in users %}
     <li><a href="{{ user.url }}">{{ user.username }}</a></li>
 {% endfor %}
+</code>
+
 
 Necesitamos "pasar" 2 variables y un bucle for, el documento necesita ser parseado y procesado por el engine.
 
