@@ -18,7 +18,7 @@ Necesitamos "pasar" 2 variables y un bucle for, el documento necesita ser parsea
 
 La alternativa que intento es:
 
-```
+```python
 for user in users:
   tags.append(li(userlink(user.username, Href=user.url)))
 ```
@@ -27,19 +27,19 @@ A simple vista, no parece aportar mucho, sin embargo, podemos usar TODA la poten
 
 Supongamos otra página en nuestra web vamos a reutilizar nuestro userlink, que es una clase python; tan sencillo como invocarlo:
 
-```
+```python
   userlink(user.username, Href=user.url)
 ```
 
 Incluso, dado que es una clase definida por nosotros podriamos abreviarla:
 
-```
+```python
   userlink(user)
 ```
 
 Ésta podría ser nuestra clase:
 
-```
+```python
 class userlink(Tag):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -50,7 +50,7 @@ class userlink(Tag):
 
 Más complicado que:
 
-```
+```python
 <a href="{{ user.url }}">{{ user.username }}</a>
 ```
 
@@ -58,7 +58,7 @@ Pero infinitamente más reutilizable
 
 También se pueden utilizar los mecanismos de herencia de python, un ejemplo, añadir el tratamiento a los nombres (Don / Doña)
 
-```
+```python
 class userlink_trat(userlink):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -70,13 +70,13 @@ class userlink_trat(userlink):
          
 Ya podemos usar el link con tratamiento en cualquier parte sin miedo:
 
-```
+```python
   userlink_trat(user)
 ```
 
 Para poder hacer lo mismo en jinga habria que replicar lo siguiente en todos los lugares en que hiciera falta:
 
-```
+```python
  {% if user.sexo == 'V' %}
    <a href="{{ user.url }}">Don.{{ user.username }}</a>
  {% else %}
