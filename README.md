@@ -7,7 +7,7 @@ Utiliza el propio lenguaje python para escribir html y css, permitiendo crear cl
 
 Supongamos una lista de enlaces, sacado de la web de Jinga:
 
-```
+```python
 {% for user in users %}
     <li><a href="{{ user.url }}">{{ user.username }}</a></li>
 {% endfor %}
